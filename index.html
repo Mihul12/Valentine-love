@@ -53,11 +53,6 @@ button {
     position: absolute;
 }
 
-#message {
-    font-size: 22px;
-    margin-top: 15px;
-}
-
 #letter {
     max-width: 90%;
     margin: 40px auto;
@@ -72,24 +67,16 @@ canvas {
     left: 0;
     pointer-events: none;
 }
-
-.heart {
-    position: fixed;
-    color: red;
-    animation: float 5s linear infinite;
-}
-
-@keyframes float {
-    from { transform: translateY(100vh); opacity: 1; }
-    to { transform: translateY(-10vh); opacity: 0; }
-}
 </style>
 </head>
 
 <body>
 
+<div id="mainContent">
+
 <h1>Succhi ❤️<br>Will you be Mihu's Valentine?</h1>
 
+<!-- IMPORTANT: Put your real file name below -->
 <img src="photo.jpg" alt="Mihu and Succhi">
 
 <div class="btn-container">
@@ -97,7 +84,9 @@ canvas {
     <button id="noBtn">No 😅</button>
 </div>
 
-<div id="message"></div>
+</div>
+
+<div id="letter"></div>
 <canvas id="fireworks"></canvas>
 
 <button onclick="startMusic()" style="background:#fff;color:#ff1744;margin-top:30px;">
@@ -112,7 +101,6 @@ canvas {
 
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
-const message = document.getElementById("message");
 const music = document.getElementById("bgMusic");
 
 function startMusic() {
@@ -124,18 +112,17 @@ noBtn.addEventListener("click", function() {
     const y = Math.random() * (window.innerHeight - 50);
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
-    message.innerHTML = "Please Succhi 🥺";
 });
 
 yesBtn.addEventListener("click", function() {
 
-    music.play(); // ensure music plays after YES
+    music.play();
 
-    document.body.innerHTML = `
-    <h1 style='margin-top:60px;'>Happy First Valentine After Marriage ❤️💍</h1>
-    <div id="letter"></div>
-    <canvas id="fireworks"></canvas>
-    `;
+    document.getElementById("mainContent").style.display = "none";
+
+    const heading = document.createElement("h1");
+    heading.innerHTML = "Happy First Valentine After Marriage ❤️💍";
+    document.body.insertBefore(heading, document.getElementById("letter"));
 
     startFireworks();
     typeLetter();
@@ -177,21 +164,6 @@ Mihu 💖`;
     typing();
 }
 
-// Floating hearts
-setInterval(() => {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-        heart.remove();
-    }, 5000);
-}, 400);
-
-// Fireworks
 function startFireworks() {
     const canvas = document.getElementById("fireworks");
     const ctx = canvas.getContext("2d");
